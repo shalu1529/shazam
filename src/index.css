@@ -23,3 +23,34 @@
     padding: 10px;
     animation: scaleLogo 2s infinite ease-in-out;
   }
+
+
+
+
+
+/* Hide scrollbar */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
