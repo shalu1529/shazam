@@ -38,6 +38,27 @@
 }
 
 
+@font-face {
+  font-family: "MyFont";
+  src: url("../src/assets/NeueMontreal-bold.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.merge-bold {
+  font-family: "Merge W00 Bold";
+  font-size: 22px;
+  color: rgb(75, 55, 55);
+}
+.my-font {
+  font-family: "MyFont";
+  font-size: 14px;
+}
+
+
+.custom-font {
+  font-family: 'MyFont', sans-serif; /* Use sans-serif as a fallback */
+}
 
 
 

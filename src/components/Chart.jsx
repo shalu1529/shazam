@@ -187,32 +187,34 @@
 
 
 
-import React, { useState, useEffect } from 'react';
-import playBtn from '../assets/playBtn.svg'; // Your play button image
-import { musicData, countryData } from '../tempDate'; // Assuming data is stored here
+import React, { useState } from "react";
+import playBtn from "../assets/playBtn.svg"; // Your play button image
+import { musicData, countryData } from "../tempDate"; // Assuming data is stored here
+import PlayAudio from "./MusicPlayer"; // Assuming you have a PlayAudio component for playing songs
 
-const MusicDashboard = () => {
+const Chart = () => {
   const [selectedCountry, setSelectedCountry] = useState(countryData.countries[0].name);
-  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedCity, setSelectedCity] = useState("");
   const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
   const [isCitiesDropdownOpen, setIsCitiesDropdownOpen] = useState(false);
   const [cities, setCities] = useState(countryData.countries[0].cities);
   const [filteredSongs, setFilteredSongs] = useState(musicData.data);
   const [selectedSong, setSelectedSong] = useState(musicData.data[0]);
   const [visibleSongs, setVisibleSongs] = useState(50);
+  const [playingSong, setPlayingSong] = useState(null); // Track the current playing song
 
   // Function to handle country selection
   const handleCountryChange = (country) => {
     setSelectedCountry(country);
     setIsCountryDropdownOpen(false);
-    
+
     // Find the selected country and its cities
     const selectedCountryData = countryData.countries.find((c) => c.name === country);
     setCities(selectedCountryData ? selectedCountryData.cities : []);
-    setSelectedCity('');
+    setSelectedCity("");
 
     // Update songs based on the new country selection
-    fetchSongs(selectedCountryData ? selectedCountryData.listid : '');
+    fetchSongs(selectedCountryData ? selectedCountryData.listid : "");
   };
 
   // Function to fetch songs based on selected country or city
@@ -228,7 +230,7 @@ const MusicDashboard = () => {
   const handleCityChange = (city) => {
     setSelectedCity(city);
     setIsCitiesDropdownOpen(false);
-    
+
     // Update songs based on the new city selection
     fetchSongs(city.listid);
   };
@@ -238,9 +240,37 @@ const MusicDashboard = () => {
     setVisibleSongs((prev) => prev + 50); // Load 50 more songs on each click
   };
 
+  // Handle play/pause functionality
+  const handlePlayPause = (song) => {
+    if (!song.attributes.previews || song.attributes.previews.length === 0) {
+      console.log("No audio available for this song");
+      return;
+    }
+    if (playingSong?.id === song.id) {
+      setPlayingSong(null); // Pause if the same song is clicked
+    } else {
+      setPlayingSong(song); // Play the clicked song
+      setSelectedSong(song); // Show selected song on the right side
+    }
+  };
+
+  const nextSong = () => {
+    const currentIndex = filteredSongs.findIndex((song) => song.id === playingSong?.id);
+    if (currentIndex < filteredSongs.length - 1) {
+      handlePlayPause(filteredSongs[currentIndex + 1]);
+    }
+  };
+
+  const prevSong = () => {
+    const currentIndex = filteredSongs.findIndex((song) => song.id === playingSong?.id);
+    if (currentIndex > 0) {
+      handlePlayPause(filteredSongs[currentIndex - 1]);
+    }
+  };
+
   return (
     <div>
-      {/* RadioHeader */}
+      {/* Charts Section */}
       <div className="relative w-full h-80 bg-gray-700 text-white p-4">
         {/* Country Dropdown */}
         <div className="relative inline-block ml-10">
@@ -272,20 +302,26 @@ const MusicDashboard = () => {
           <div className="ml-4">
             <h1 className="text-2xl">{selectedCountry}</h1>
             <h2 className="text-4xl font-bold">Top 200</h2>
-            <p className="mt-2">The most Shazamed tracks in {selectedCountry} this week</p>
+            <p className="mt-2">
+              The most Shazamed tracks in {selectedCountry} this week
+            </p>
           </div>
         </div>
 
         {/* Buttons */}
         <div className="mt-20 ml-10 flex space-x-4">
-          <button className="px-4 py-2 bg-white text-black font-bold rounded-full">TOP 200</button>
-          <button className="px-4 py-2 bg-gray-600 text-white font-bold rounded-full">DISCOVERY</button>
+          <button className="px-4 py-2 bg-white text-black font-bold rounded-full">
+            TOP 200
+          </button>
+          <button className="px-4 py-2 bg-gray-600 text-white font-bold rounded-full">
+            DISCOVERY
+          </button>
           <div className="relative inline-block">
             <button
               onClick={() => setIsCitiesDropdownOpen(!isCitiesDropdownOpen)}
               className="px-4 py-2 bg-gray-600 text-white font-bold rounded-full flex items-center space-x-2"
             >
-              <span>{selectedCity ? selectedCity.name : 'CITIES'}</span>
+              <span>{selectedCity ? selectedCity.name : "CITIES"}</span>
               <ion-icon name="chevron-down-outline"></ion-icon>
             </button>
             {isCitiesDropdownOpen && (
@@ -313,7 +349,12 @@ const MusicDashboard = () => {
         </div>
       </div>
 
-      {/* Charts Section */}
+
+
+
+
+
+
       <div className="flex flex-col md:flex-row justify-between p-4 bg-gray-100">
         {/* Left section: List of songs */}
         <div className="flex-1 md:pr-6 max-h-screen overflow-y-auto scrollbar-hide">
@@ -321,14 +362,13 @@ const MusicDashboard = () => {
             <div
               key={song.id}
               className="flex items-center mb-4 border-b border-gray-200 pb-4 cursor-pointer"
-              onClick={() => setSelectedSong(song)}
+              onClick={() => handlePlayPause(song)}
             >
               {/* Rank Number */}
               <div className="w-8 text-xl font-semibold">{index + 1}</div>
 
               {/* Song Info */}
               <div className="flex items-center">
-                {/* Song Artwork and Play Button */}
                 <div className="relative mr-4">
                   <img
                     src={song.attributes.artwork.url.replace("{w}x{h}", "60x60")}
@@ -336,11 +376,13 @@ const MusicDashboard = () => {
                     className="rounded-lg"
                   />
                   <button className="absolute inset-0 flex justify-center items-center text-white text-2xl">
-                    <ion-icon name="play-circle-outline"></ion-icon>
+                    {playingSong?.id === song.id ? (
+                      <ion-icon name="pause-circle-outline"></ion-icon>
+                    ) : (
+                      <ion-icon name="play-circle-outline"></ion-icon>
+                    )}
                   </button>
                 </div>
-
-                {/* Song Details */}
                 <div>
                   <h3 className="text-sm font-bold">{song.attributes.name}</h3>
                   <p className="text-xs text-gray-500">{song.attributes.artistName}</p>
@@ -348,8 +390,6 @@ const MusicDashboard = () => {
               </div>
             </div>
           ))}
-
-          {/* "Show More" Button */}
           {visibleSongs < filteredSongs.length && (
             <button
               onClick={handleShowMore}
@@ -360,7 +400,6 @@ const MusicDashboard = () => {
           )}
         </div>
 
-        {/* Right section: Featured song */}
         <div
           className="md:w-[60%] text-white p-10 rounded-lg relative h-auto md:h-[60vh] flex flex-col items-center justify-center mr-10"
           style={{ backgroundColor: `#${selectedSong.attributes.artwork.bgColor}` }}
@@ -384,9 +423,20 @@ const MusicDashboard = () => {
             </button>
           </div>
         </div>
+
       </div>
-    </div>
+
+
+
+
+
+        {/* Music Player */}
+        {playingSong && <PlayAudio song={playingSong} nextSong={nextSong} prevSong={prevSong} />}
+      </div>
+  
   );
 };
 
-export default MusicDashboard;
+export default Chart;
+
+

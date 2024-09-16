@@ -17,9 +17,9 @@ const GettheApp = () => {
   return (
     <>
       <div className="bg-[#F8F8F8]">
-        <img src={img1} alt="bg-img" className="w-full" />
+        <img src={img1} alt="bg-img" className="w-[90%] pl-40 pt-28"  />
         <div className="text-center px-4">
-          <h1 className="text-3xl md:text-4xl font-bold mt-8 mx-auto">
+          <h1 className="text-4xl md:text-5xl font-bold mt-10 mx-auto">
             Identify, listen and discover <br></br> songs with the Shazam app
           </h1>
           <p className="text-gray-500 font-normal text-lg md:text-xl mt-4">
