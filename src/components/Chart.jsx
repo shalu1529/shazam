@@ -280,7 +280,7 @@ const Chart = () => {
   return (
     <div>
       {/* Charts Section */}
-      <div className="relative w-full h-80 bg-gray-700 text-white p-4">
+      <div className="relative w-full h-90 bg-gray-700 text-white p-4 pt-20">
         {/* Country Dropdown */}
         <div className="relative inline-block ml-10">
           <button
