@@ -8,7 +8,7 @@ import { musicData } from '../tempDate'; // Import song data
 function Navbar() {
   const location = useLocation();
   const navigate = useNavigate(); // Hook for programmatic navigation
-  const [bgColor, setBgColor] = useState('bg-blue-500'); // Default background color
+  const [bgColor, setBgColor] = useState(''); // Default background color
   const [textColor, setTextColor] = useState('text-white'); // Default text color
   const [logoImage, setLogoImage] = useState(logo); // Default logo (white)
   const [showSearch, setShowSearch] = useState(false); // Controls search input visibility
@@ -25,7 +25,7 @@ function Navbar() {
           setTextColor('text-black');
           setLogoImage(logoBlack); // Switch to black logo when scrolling
         } else {
-          setBgColor('bg-blue-500');
+          setBgColor('bg-tansparent');
           setTextColor('text-white');
           setLogoImage(logo); // Default white logo
         }
@@ -49,7 +49,7 @@ function Navbar() {
         setLogoImage(logoBlack);
         break;
       case '/charts':
-        setBgColor('bg-gray-500');
+        setBgColor('bg-gray-600');
         setTextColor('text-white');
         break;
       case '/radio':
@@ -58,7 +58,7 @@ function Navbar() {
         setLogoImage(logo);
         break;
       default:
-        setBgColor('bg-button-gradient');
+        setBgColor('bg-transparent');
         setTextColor('text-white');
         setLogoImage(logo);
         break;
