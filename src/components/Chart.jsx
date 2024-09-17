@@ -4,7 +4,7 @@
 // const Charts = () => {
 //   // State to track the currently selected song
 //   const [selectedSong, setSelectedSong] = useState(musicData.data[0]);
-  
+
 //   // State to control the number of songs displayed
 //   const [visibleSongs, setVisibleSongs] = useState(50); // Initially display 50 songs
 
@@ -68,7 +68,7 @@
 //           alt={selectedSong.attributes.albumName}
 //           className="rounded-lg mb-4 items-center mt-2"
 //         />
-        
+
 //         <div className="flex flex-col justify-between w-full h-full mt-4">
 //           <div className="flex flex-col items-start ">
 //             <h1 className="text-1xl ">
@@ -87,10 +87,6 @@
 // };
 
 // export default Charts;
-
-
-
-
 
 // import React, { useState } from 'react';
 // import playBtn from '../assets/playBtn.svg'
@@ -135,7 +131,7 @@
 //       {/* Main Heading */}
 //       <div className="mt-6 flex ml-10">
 //       <img src={playBtn} alt ="" />
-      
+
 //         <div className='ml-4'>
 //         <h1 className="text-2xl ">{selectedCountry}</h1>
 //         <h2 className="text-4xl  font-bold">Top 200</h2>
@@ -184,19 +180,18 @@
 
 // export default RadioHeader;
 
-
-
-
 import React, { useState } from "react";
 import playBtn from "../assets/playBtn.svg";
 import { FaPlay, FaPause } from "react-icons/fa";
 import { musicData, countryData } from "../tempDate"; // Assuming data is stored here
 import PlayAudio from "./MusicPlayer"; // Assuming you have a PlayAudio component for playing songs
 import { useNavigate } from "react-router-dom";
-import {  FaApple } from 'react-icons/fa';
+import { FaApple } from "react-icons/fa";
 
 const Chart = () => {
-  const [selectedCountry, setSelectedCountry] = useState(countryData.countries[0].name);
+  const [selectedCountry, setSelectedCountry] = useState(
+    countryData.countries[0].name
+  );
   const [selectedCity, setSelectedCity] = useState("");
   const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
   const [isCitiesDropdownOpen, setIsCitiesDropdownOpen] = useState(false);
@@ -205,7 +200,6 @@ const Chart = () => {
   const [selectedSong, setSelectedSong] = useState(musicData.data[0]);
   const [visibleSongs, setVisibleSongs] = useState(50);
   const [playingSong, setPlayingSong] = useState(null); // Track the current playing song
-  
 
   const navigate = useNavigate();
   // Function to handle country selection
@@ -214,7 +208,9 @@ const Chart = () => {
     setIsCountryDropdownOpen(false);
 
     // Find the selected country and its cities
-    const selectedCountryData = countryData.countries.find((c) => c.name === country);
+    const selectedCountryData = countryData.countries.find(
+      (c) => c.name === country
+    );
     setCities(selectedCountryData ? selectedCountryData.cities : []);
     setSelectedCity("");
 
@@ -260,14 +256,18 @@ const Chart = () => {
   };
 
   const nextSong = () => {
-    const currentIndex = filteredSongs.findIndex((song) => song.id === playingSong?.id);
+    const currentIndex = filteredSongs.findIndex(
+      (song) => song.id === playingSong?.id
+    );
     if (currentIndex < filteredSongs.length - 1) {
       handlePlayPause(filteredSongs[currentIndex + 1]);
     }
   };
 
   const prevSong = () => {
-    const currentIndex = filteredSongs.findIndex((song) => song.id === playingSong?.id);
+    const currentIndex = filteredSongs.findIndex(
+      (song) => song.id === playingSong?.id
+    );
     if (currentIndex > 0) {
       handlePlayPause(filteredSongs[currentIndex - 1]);
     }
@@ -280,7 +280,7 @@ const Chart = () => {
   return (
     <div>
       {/* Charts Section */}
-      <div className="relative w-full h-80 bg-gray-700 text-white p-4">
+      <div className="relative w-full h-90 bg-gray-700 text-white p-4 pt-20">
         {/* Country Dropdown */}
         <div className="relative inline-block ml-10">
           <button
@@ -358,15 +358,42 @@ const Chart = () => {
         </div>
       </div>
 
+      <div className="flex flex-col md:flex-row-reverse justify-between p-4 bg-gray-100">
+    
+        <div
+          className="md:w-[60%] text-white p-10 rounded-lg relative h-auto md:h-[60vh] flex flex-col items-center justify-center mr-10"
+          style={{
+            backgroundColor: `#${selectedSong.attributes.artwork.bgColor}`,
+          }}
+        >
+          <img
+            src={selectedSong.attributes.artwork.url.replace(
+              "{w}x{h}",
+              "250x250"
+            )}
+            alt={selectedSong.attributes.albumName}
+            className="rounded-lg mb-4 items-center mt-2 "
+          />
 
+          <div className="flex flex-col justify-between w-full h-full mt-4">
+            <div className="flex flex-col items-start ">
+              <h1 className="text-1xl ">
+                #{musicData.data.indexOf(selectedSong) + 1} Top 200
+              </h1>
+              <h4 className="text-xl ">{selectedSong.attributes.name}</h4>
+              <p className="text-sm ">{selectedSong.attributes.artistName}</p>
+            </div>
+            <button className=" flex bg-white hover:bg-blue-600 text-black px-4 py-2 rounded-full absolute bottom-4 right-4 ">
+              LISTEN ON
+              <span className="ml-1 flex items-center">
+                <FaApple className="mr-1 text-black" />
+                Music
+              </span>
+            </button>
+          </div>
+        </div>
 
-
-
-
-
-      <div className="flex flex-col md:flex-row justify-between p-4 bg-gray-100">
-        {/* Left section: List of songs */}
-        <div className="flex-1 md:pr-6 max-h-screen overflow-y-auto scrollbar-hide">
+        <div className="flex-1 md:pl-6 overflow max-h-screen mt-4">
           {filteredSongs.slice(0, visibleSongs).map((song, index) => (
             <div
               key={song.id}
@@ -380,7 +407,10 @@ const Chart = () => {
               <div className="flex items-center">
                 <div className="relative mr-4">
                   <img
-                    src={song.attributes.artwork.url.replace("{w}x{h}", "60x60")}
+                    src={song.attributes.artwork.url.replace(
+                      "{w}x{h}",
+                      "60x60"
+                    )}
                     alt={song.attributes.albumName}
                     className="rounded-lg"
                   />
@@ -401,11 +431,14 @@ const Chart = () => {
                       <FaPlay size={20} />
                     )}
                   </button>
-
                 </div>
                 <div onClick={() => handleSongClick(song.id)}>
-                  <h3 className="text-sm text-black font-bold">{song.attributes.name}</h3>
-                  <p className="text-xs text-black">{song.attributes.artistName}</p>
+                  <h3 className="text-sm text-black font-bold">
+                    {song.attributes.name}
+                  </h3>
+                  <p className="text-xs text-black">
+                    {song.attributes.artistName}
+                  </p>
                 </div>
               </div>
             </div>
@@ -419,48 +452,14 @@ const Chart = () => {
             </button>
           )}
         </div>
-
-        <div
-          className="md:w-[60%] text-white p-10 rounded-lg relative h-auto md:h-[60vh] flex flex-col items-center justify-center mr-10"
-          style={{ backgroundColor: `#${selectedSong.attributes.artwork.bgColor}` }}
-        >
-          <img
-            src={selectedSong.attributes.artwork.url.replace("{w}x{h}", "250x250")}
-            alt={selectedSong.attributes.albumName}
-            className="rounded-lg mb-4 items-center mt-2"
-          />
-
-          <div className="flex flex-col justify-between w-full h-full mt-4">
-            <div className="flex flex-col items-start ">
-              <h1 className="text-1xl ">
-                #{musicData.data.indexOf(selectedSong) + 1} Top 200
-              </h1>
-              <h4 className="text-xl ">{selectedSong.attributes.name}</h4>
-              <p className="text-sm ">{selectedSong.attributes.artistName}</p>
-            </div>
-            <button className=" flex bg-white hover:bg-blue-600 text-black px-4 py-2 rounded-full absolute bottom-4 right-4 ">
-              LISTEN ON 
-              <span className="ml-1 flex items-center">
-            <FaApple className="mr-1 text-black" />
-            Music
-          </span>
-            </button>
-          </div>
-        </div>
-
       </div>
 
-
-
-
-
-        {/* Music Player */}
-        {playingSong && <PlayAudio song={playingSong} nextSong={nextSong} prevSong={prevSong} />}
-      </div>
-  
+      {/* Music Player */}
+      {playingSong && (
+        <PlayAudio song={playingSong} nextSong={nextSong} prevSong={prevSong} />
+      )}
+    </div>
   );
 };
 
 export default Chart;
-
-
