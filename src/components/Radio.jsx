@@ -606,8 +606,44 @@ const Radio = () => {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row justify-between p-4 bg-gray-100">
-        <div className="flex-1 md:pr-6 max-h-screen overflow-y-auto scrollbar-hide">
+      <div className="flex flex-col md:flex-row-reverse justify-between p-4 bg-gray-100">
+          {/* This section should always show the selected or default song */}
+          <div
+          className="md:w-[60%] text-white p-10 rounded-lg relative h-auto md:h-[60vh] flex flex-col items-center justify-center mr-10 mt-10"
+          style={{
+            backgroundColor: `#${selectedSong.attributes.artwork.bgColor}`,
+          }}
+        >
+          <img
+            src={selectedSong.attributes.artwork.url.replace(
+              "{w}x{h}",
+              "250x250"
+            )}
+            alt={selectedSong.attributes.albumName}
+            className="rounded-lg  mt-8"
+          />
+          <div className="flex flex-col justify-between w-full h-full mt-8">
+            <div className="flex flex-col items-start">
+              <h1 className="text-1xl">
+                #{filteredSongs.indexOf(selectedSong) + 1} Top 200
+              </h1>
+              <h4 className="text-xl ">{selectedSong.attributes.name}</h4>
+              <p className="text-sm ">{selectedSong.attributes.artistName}</p>
+            </div>
+            {/* <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg absolute bottom-4 right-4">
+              LISTEN ON <ion-icon name="musical-notes-outline" />
+            </button> */}
+
+            <button className=" flex bg-white hover:bg-blue-600 text-black px-4 py-2 rounded-full absolute bottom-4 right-4 ">
+              LISTEN ON 
+              <span className="ml-1 flex items-center">
+            <FaApple className="mr-1 text-black" />
+            Music
+          </span>
+            </button>
+          </div>
+        </div>
+        <div className="flex-1 md:pr-6 max-h-screen overflow scrollbar-hide mt-4">
           {filteredSongs.slice(0, visibleSongs).map((song, index) => (
             <div
               key={song.id}
@@ -658,42 +694,7 @@ const Radio = () => {
           )}
         </div>
 
-        {/* This section should always show the selected or default song */}
-        <div
-          className="md:w-[60%] text-white p-10 rounded-lg relative h-auto md:h-[60vh] flex flex-col items-center justify-center mr-10"
-          style={{
-            backgroundColor: `#${selectedSong.attributes.artwork.bgColor}`,
-          }}
-        >
-          <img
-            src={selectedSong.attributes.artwork.url.replace(
-              "{w}x{h}",
-              "250x250"
-            )}
-            alt={selectedSong.attributes.albumName}
-            className="rounded-lg mb-4"
-          />
-          <div className="flex flex-col justify-between w-full h-full mt-4">
-            <div className="flex flex-col items-start">
-              <h1 className="text-1xl">
-                #{filteredSongs.indexOf(selectedSong) + 1} Top 200
-              </h1>
-              <h4 className="text-xl ">{selectedSong.attributes.name}</h4>
-              <p className="text-sm ">{selectedSong.attributes.artistName}</p>
-            </div>
-            {/* <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg absolute bottom-4 right-4">
-              LISTEN ON <ion-icon name="musical-notes-outline" />
-            </button> */}
-
-            <button className=" flex bg-white hover:bg-blue-600 text-black px-4 py-2 rounded-full absolute bottom-4 right-4 ">
-              LISTEN ON 
-              <span className="ml-1 flex items-center">
-            <FaApple className="mr-1 text-black" />
-            Music
-          </span>
-            </button>
-          </div>
-        </div>
+      
       </div>
 
       {/* PlayAudio component should render only when a song is playing */}
