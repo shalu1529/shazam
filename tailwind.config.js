@@ -9,6 +9,9 @@ export default {
       colors: {
         'black-rgba': 'rgba(var(--color-black-rgb), 0.7)',
       },
+      backgroundImage: {
+        'button-gradient': 'linear-gradient(180deg, #0bf, #066aff 50%)',
+      },
     },
   },
   plugins: [],

@@ -188,9 +188,12 @@
 
 
 import React, { useState } from "react";
-import playBtn from "../assets/playBtn.svg"; // Your play button image
+import playBtn from "../assets/playBtn.svg";
+import { FaPlay, FaPause } from "react-icons/fa";
 import { musicData, countryData } from "../tempDate"; // Assuming data is stored here
 import PlayAudio from "./MusicPlayer"; // Assuming you have a PlayAudio component for playing songs
+import { useNavigate } from "react-router-dom";
+import {  FaApple } from 'react-icons/fa';
 
 const Chart = () => {
   const [selectedCountry, setSelectedCountry] = useState(countryData.countries[0].name);
@@ -202,7 +205,9 @@ const Chart = () => {
   const [selectedSong, setSelectedSong] = useState(musicData.data[0]);
   const [visibleSongs, setVisibleSongs] = useState(50);
   const [playingSong, setPlayingSong] = useState(null); // Track the current playing song
+  
 
+  const navigate = useNavigate();
   // Function to handle country selection
   const handleCountryChange = (country) => {
     setSelectedCountry(country);
@@ -266,6 +271,10 @@ const Chart = () => {
     if (currentIndex > 0) {
       handlePlayPause(filteredSongs[currentIndex - 1]);
     }
+  };
+
+  const handleSongClick = (songId) => {
+    navigate(`/song/${songId}`); // Redirect to the single song page with the song ID
   };
 
   return (
@@ -375,17 +384,28 @@ const Chart = () => {
                     alt={song.attributes.albumName}
                     className="rounded-lg"
                   />
-                  <button className="absolute inset-0 flex justify-center items-center text-white text-2xl">
+                  {/* <button className="absolute inset-0 flex justify-center items-center text-white text-2xl">
                     {playingSong?.id === song.id ? (
                       <ion-icon name="pause-circle-outline"></ion-icon>
                     ) : (
                       <ion-icon name="play-circle-outline"></ion-icon>
                     )}
+                  </button> */}
+                  <button
+                    className="absolute inset-0 flex justify-center items-center rounded-full text-white text-2xl"
+                    onClick={() => handlePlayPause(song)}
+                  >
+                    {playingSong?.id === song.id ? (
+                      <FaPause size={20} />
+                    ) : (
+                      <FaPlay size={20} />
+                    )}
                   </button>
+
                 </div>
-                <div>
-                  <h3 className="text-sm font-bold">{song.attributes.name}</h3>
-                  <p className="text-xs text-gray-500">{song.attributes.artistName}</p>
+                <div onClick={() => handleSongClick(song.id)}>
+                  <h3 className="text-sm text-black font-bold">{song.attributes.name}</h3>
+                  <p className="text-xs text-black">{song.attributes.artistName}</p>
                 </div>
               </div>
             </div>
@@ -418,8 +438,12 @@ const Chart = () => {
               <h4 className="text-xl ">{selectedSong.attributes.name}</h4>
               <p className="text-sm ">{selectedSong.attributes.artistName}</p>
             </div>
-            <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg absolute bottom-4 right-4">
-              LISTEN ON <ion-icon name="musical-notes-outline" className="ml-2"></ion-icon>
+            <button className=" flex bg-white hover:bg-blue-600 text-black px-4 py-2 rounded-full absolute bottom-4 right-4 ">
+              LISTEN ON 
+              <span className="ml-1 flex items-center">
+            <FaApple className="mr-1 text-black" />
+            Music
+          </span>
             </button>
           </div>
         </div>

@@ -1,21 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import logo from '../assets/logo.svg'; // White Shazam logo
 import logoBlack from '../assets/shazamBlack.svg'; // Black Shazam logo
-import { Link, useLocation } from 'react-router-dom';
-import { FaSearch, FaBars, FaTimes } from 'react-icons/fa'; 
-import { FaApple } from 'react-icons/fa';
+import { Link, useLocation, useNavigate } from 'react-router-dom'; // useNavigate for navigation
+import { FaSearch, FaBars, FaTimes, FaApple } from 'react-icons/fa';
+import { musicData } from '../tempDate'; // Import song data
 
 function Navbar() {
   const location = useLocation();
+  const navigate = useNavigate(); // Hook for programmatic navigation
   const [bgColor, setBgColor] = useState('bg-blue-500'); // Default background color
   const [textColor, setTextColor] = useState('text-white'); // Default text color
   const [logoImage, setLogoImage] = useState(logo); // Default logo (white)
   const [showSearch, setShowSearch] = useState(false); // Controls search input visibility
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Controls mobile menu visibility
+  const [searchQuery, setSearchQuery] = useState(''); // State for storing search query
   const searchRef = useRef(null); // Ref to the search input
-
-  
-
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,15 +31,13 @@ function Navbar() {
         }
       }
     };
-  
+
     window.addEventListener('scroll', handleScroll);
-  
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [location.pathname]);
-  
-
 
   useEffect(() => {
     // Update navbar colors based on the current route
@@ -58,10 +55,10 @@ function Navbar() {
       case '/radio':
         setBgColor('bg-[#0324c8]');
         setTextColor('text-white');
-        setLogoImage(logo)
+        setLogoImage(logo);
         break;
       default:
-        setBgColor('bg-blue-500');
+        setBgColor('bg-button-gradient');
         setTextColor('text-white');
         setLogoImage(logo);
         break;
@@ -87,6 +84,32 @@ function Navbar() {
     };
   }, [showSearch]);
 
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  // Handle search submit when Enter is pressed
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+
+    // Find the song by name
+    const foundSong = musicData.data.find((song) =>
+      song.attributes.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    if (foundSong) {
+      // Redirect to the song's detail page if found
+      navigate(`/song/${foundSong.id}`);
+    } else {
+      alert('Song not found!');
+    }
+
+    setShowSearch(false); // Hide search bar after searching
+  };
+ const loginpage = () =>{
+  navigate("/login");
+ }
   return (
     <nav className={`${bgColor} ${textColor} flex justify-between items-center px-8 py-3 fixed top-0 w-full z-50 transition-all duration-300 mb-6`}>
       {/* Left Section: Logo and Links */}
@@ -120,14 +143,16 @@ function Navbar() {
       <div className="flex items-center space-x-4">
         {/* Search Icon or Input Field */}
         {showSearch ? (
-          <div className="relative" ref={searchRef}>
+          <form onSubmit={handleSearchSubmit} className="relative" ref={searchRef}>
             <input
               type="text"
-              placeholder="Search"
-              className={`border-2 border-gray-300 rounded-lg pl-4 pr-10 py-2 focus:outline-none ${textColor}`}
+              value={searchQuery}
+              onChange={handleSearchChange}
+              placeholder="Search for a song"
+              className={`border-2 border-gray-300 rounded-lg pl-4 pr-10 py-2 focus:outline-none text-black`}
             />
             <FaSearch className="absolute right-3 top-2.5 text-gray-500" />
-          </div>
+          </form>
         ) : (
           <FaSearch
             className={`cursor-pointer hover:text-blue-200 ${textColor}`}
@@ -136,28 +161,13 @@ function Navbar() {
         )}
 
         {/* Connect Button - Hidden on small screens */}
-        {/* <button className={`bg-white text-blue-500 font-bold py-2 px-4 rounded-lg hover:bg-blue-100 hidden md:flex ${bgColor === 'bg-white' ? 'text-black' : 'text-blue-500'}`}>
+        <button className={`font-bold py-2 px-4 rounded-lg hidden md:flex ${bgColor === 'bg-white' ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-white text-blue-500 hover:bg-blue-100'}`}>
           CONNECT
-          <span className="text-blue-400 ml-1 flex items-center">
-            <FaApple className="text-blue-400 mr-1" />
+          <span className="ml-1 flex items-center">
+            <FaApple className={`mr-1 ${bgColor === 'bg-white' ? 'text-white' : 'text-blue-400'}`} />
             Music
           </span>
-        </button> */}
-
-        {/* Connect Button - Hidden on small screens */}
-<button
-  className={`font-bold py-2 px-4 rounded-lg hidden md:flex ${
-    bgColor === 'bg-white'
-      ? 'bg-blue-500 text-white hover:bg-blue-600'
-      : 'bg-white text-blue-500 hover:bg-blue-100'
-  }`}
->
-  CONNECT
-  <span className="ml-1 flex items-center">
-    <FaApple className={`mr-1 ${bgColor === 'bg-white' ? 'text-white' : 'text-blue-400'}`} />
-    Music
-  </span>
-</button>
+        </button>
 
         {/* Hamburger Menu Icon or Close Icon - Visible on small screens */}
         <div className="md:hidden">
@@ -197,7 +207,8 @@ function Navbar() {
           </Link>
           <div className="mt-auto">
             <p>Connect to Apple Music to play songs in full within Shazam.</p>
-            <button className="bg-gray-800 text-white py-2 px-4 rounded-lg mt-4 w-full flex justify-center items-center">
+            <button onClick={loginpage}
+             className="bg-gray-800 text-white py-2 px-4 rounded-lg mt-4 w-full flex justify-center items-center">
               CONNECT <FaApple className="ml-2" /> Music
             </button>
           </div>

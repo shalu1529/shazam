@@ -100,33 +100,17 @@
 
 // export default Home;
 
-
-import React, { useEffect } from 'react';
 import Navbar from './Navbar'; 
 import shazamBanner from '../assets/mobile.webp'; 
 import qrcode from '../assets/qrcode.webp';
-import shazam from '../assets/shazam.png';
 import music from '../assets/music2.webp';
 import Footer from './Footer';
+import FixedLogo from './FixedLogo'; // Import the new component
 
 function Home() {
 
-  // Effect to scale logo on scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      const logo = document.querySelector('.fixed-logo');
-      const scaleValue = 1 + window.scrollY / 1000;  // Adjust scale based on scroll position
-      logo.style.transform = `scale(${scaleValue})`;
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
   return (
     <div>
-      {/* Main section with new gradient background */}
       <section className="min-h-screen text-white" style={{
         backgroundImage: 'linear-gradient(180deg, #0bf, #066aff 50%)'
       }}>
@@ -174,18 +158,11 @@ function Home() {
             </div>
           </div>
         </div>
-
-        {/* Fixed Shazam Logo */}
-        <img 
-          src={shazam} 
-          alt="Shazam Logo" 
-          className="fixed-logo" // Fixed logo with scaling effect
-        />
       </section>
 
       {/* Promo section */}
       <div className="flex justify-center items-center py-16">
-        <div className="bg-red-500 bg-gradient-to-b from-[#e2425a] to-[#e10a22] rounded-lg p-6 md:p-10 text-white w-full max-w-lg md:max-w-[70%]  shadow-lg h-96 md:h-auto">
+        <div className="bg-red-500 bg-gradient-to-b from-[#e2425a] to-[#e10a22] rounded-lg p-6 md:p-10 text-white w-full max-w-lg md:max-w-[70%] shadow-lg h-96 md:h-auto">
           <div className="items-center">
             <img
               src={music}
@@ -205,6 +182,9 @@ function Home() {
 
       {/* Footer */}
       <Footer />
+
+      {/* Fixed Shazam Logo */}
+      
     </div>
   );
 }
