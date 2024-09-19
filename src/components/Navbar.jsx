@@ -3,6 +3,8 @@ import logo from '../assets/logo.svg'; // White Shazam logo
 import logoBlack from '../assets/shazamBlack.svg'; // Black Shazam logo
 import { Link, useLocation, useNavigate } from 'react-router-dom'; // useNavigate for navigation
 import { FaSearch, FaBars, FaTimes, FaApple } from 'react-icons/fa';
+import { signOut, onAuthStateChanged } from 'firebase/auth'; // Firebase auth imports
+import { auth } from '../firebase'; // Import the auth instance
 import { musicData } from '../tempDate'; // Import song data
 
 function Navbar() {
@@ -14,7 +16,22 @@ function Navbar() {
   const [showSearch, setShowSearch] = useState(false); // Controls search input visibility
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Controls mobile menu visibility
   const [searchQuery, setSearchQuery] = useState(''); // State for storing search query
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false); // Track user's login status
+  const [showDropdown, setShowDropdown] = useState(false); // Controls dropdown visibility
   const searchRef = useRef(null); // Ref to the search input
+
+  useEffect(() => {
+    // Listen for changes to user's authentication state
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsUserLoggedIn(true); // User is logged in
+      } else {
+        setIsUserLoggedIn(false); // User is logged out
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup the listener on unmount
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -107,9 +124,18 @@ function Navbar() {
 
     setShowSearch(false); // Hide search bar after searching
   };
- const loginpage = () =>{
-  navigate("/login");
- }
+
+  // Handle logout
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        navigate('/login'); // Redirect to login page after logging out
+      })
+      .catch((error) => {
+        console.error('Error logging out:', error);
+      });
+  };
+
   return (
     <nav className={`${bgColor} ${textColor} flex justify-between items-center px-8 py-3 fixed top-0 w-full z-50 transition-all duration-300 mb-6`}>
       {/* Left Section: Logo and Links */}
@@ -160,14 +186,47 @@ function Navbar() {
           />
         )}
 
-        {/* Connect Button - Hidden on small screens */}
-        <button className={`font-bold py-2 px-4 rounded-lg hidden md:flex ${bgColor === 'bg-white' ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-white text-blue-500 hover:bg-blue-100'}`}>
-          CONNECT
-          <span className="ml-1 flex items-center">
-            <FaApple className={`mr-1 ${bgColor === 'bg-white' ? 'text-white' : 'text-blue-400'}`} />
-            Music
-          </span>
-        </button>
+        {/* Display CONNECT or SHAZAM based on login status */}
+        {!isUserLoggedIn ? (
+          <button onClick={() => navigate('/login')} className={`font-bold py-2 px-4 rounded-lg hidden md:flex ${bgColor === 'bg-white' ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-white text-blue-500 hover:bg-blue-100'}`}>
+            CONNECT
+            <span className="ml-1 flex items-center">
+              <FaApple className={`mr-1 ${bgColor === 'bg-white' ? 'text-white' : 'text-blue-400'}`} />
+              Music
+            </span>
+          </button>
+        ) : (
+          <div className="relative">
+            {/* SHAZAM button with hover effect */}
+            <button
+              onMouseEnter={() => setShowDropdown(true)}
+              onMouseLeave={() => setShowDropdown(false)}
+              className={`font-bold py-2 px-4 rounded-lg hidden md:flex ${bgColor === 'bg-white' ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-white text-blue-500 hover:bg-blue-100'}`}
+            >
+              SHAZAM
+              <span className="ml-1 flex items-center">
+              <FaApple className={`mr-1 ${bgColor === 'bg-white' ? 'text-white' : 'text-blue-400'}`} />
+              Music
+            </span>
+            </button>
+
+            {/* Dropdown Menu */}
+            {showDropdown && (
+              <div
+                onMouseEnter={() => setShowDropdown(true)}
+                onMouseLeave={() => setShowDropdown(false)}
+                className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-50"
+              >
+                <Link to="/wishlist" className=" text-black block px-4 py-2 hover:bg-gray-200">
+                  Wishlist
+                </Link>
+                <button onClick={handleLogout} className=" text-black block w-full text-left px-4 py-2 hover:bg-gray-200">
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Hamburger Menu Icon or Close Icon - Visible on small screens */}
         <div className="md:hidden">
@@ -207,10 +266,21 @@ function Navbar() {
           </Link>
           <div className="mt-auto">
             <p>Connect to Apple Music to play songs in full within Shazam.</p>
-            <button onClick={loginpage}
-             className="bg-gray-800 text-white py-2 px-4 rounded-lg mt-4 w-full flex justify-center items-center">
-              CONNECT <FaApple className="ml-2" /> Music
-            </button>
+            {!isUserLoggedIn ? (
+              <button
+                onClick={() => navigate('/login')}
+                className="bg-gray-800 text-white py-2 px-4 rounded-lg mt-4 w-full flex justify-center items-center"
+              >
+                CONNECT <FaApple className="ml-2" /> Music
+              </button>
+            ) : (
+              <button
+                onClick={handleLogout}
+                className="bg-gray-800 text-white py-2 px-4 rounded-lg mt-4 w-full flex justify-center items-center"
+              >
+                Logout
+              </button>
+            )}
           </div>
         </div>
       )}

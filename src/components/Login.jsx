@@ -1,17 +1,40 @@
-import React from 'react';
-import shazamLogo from '../assets/logo.svg'; // Use the Shazam logo you provided
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase'; // Import the Firebase auth instance
+import shazamLogo from '../assets/logo.svg'; // Shazam logo
 
 function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    // Use Firebase auth to log in with email and password
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Redirect to the home page after successful login
+        navigate('/');
+      })
+      .catch((error) => {
+        setError(error.message); // Handle login errors
+      });
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black">
       {/* Logo */}
       <img src={shazamLogo} alt="Shazam Logo" className="w-16 h-16 mb-6" />
 
-      {/* Login Text */}
+      {/* Login Form */}
       <h1 className="text-white text-3xl font-bold mb-6">Login to your account</h1>
 
-      {/* Login Form */}
-      <form className="w-full max-w-sm">
+      {error && <p className="text-red-500 mb-4">{error}</p>} {/* Show error message */}
+
+      <form className="w-full max-w-sm" onSubmit={handleLogin}>
         <div className="mb-4">
           <label className="block text-white mb-2" htmlFor="email">
             Email address
@@ -21,6 +44,9 @@ function Login() {
             type="email"
             id="email"
             placeholder="name@domain.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)} // Controlled input
+            required
           />
         </div>
 
@@ -33,21 +59,23 @@ function Login() {
             type="password"
             id="password"
             placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)} // Controlled input
+            required
           />
         </div>
 
-        {/* Login Button */}
-        <button className="w-full bg-button-gradient text-white py-3 rounded font-bold">
+        <button
+          type="submit"
+          className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded font-bold"
+        >
           Login
         </button>
 
         <p className="mt-4 text-center text-white">
-          Don't have an account? <a href="/signup" className="text-blue-500">Sign Up</a>
+          Don't have an account? <Link to="/signup" className="text-blue-500">Sign Up</Link>
         </p>
       </form>
-
-      {/* Or login with social buttons */}
-    
     </div>
   );
 }

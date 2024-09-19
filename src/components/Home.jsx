@@ -1,111 +1,8 @@
-// import React from 'react';
-// import Navbar from './Navbar'; 
-// import shazamBanner from '../assets/mobile.webp'; 
-// import qrcode from '../assets/qrcode.webp';
-// import shazam from '../assets/shazam.png'
-// import music from '../assets/music2.webp';
-// import Footer from './Footer';
-// function Home() {
-//   return (
-//     <div>
-      
-  
-
-      
-//       <section className="bg-blue-500 text-white min-h-screen">
-//         <div className="container mx-auto py-12 px-6 flex flex-col md:flex-row items-center justify-between">
-          
-//           <div className="md:w-1/2 flex justify-center">
-//             <img 
-//               src={shazamBanner} 
-//               alt="Shazam on Mobile Banner" 
-//               title="Shazam on Mobile Banner" 
-//               className="w-full max-w-lg " 
-//             />
-//           </div>
-
-          
-//           <div className="md:w-1/2 mt-8 md:mt-0">
-//             {/* <h1 className="text-5xl font-bold mb-6">Name songs in seconds</h1> */}
-//             <h1 className="text-5xl font-bold mb-6 leading-none">
-//               Name songs in <br /> 
-//               <span className="inline-block">seconds</span>
-//             </h1>
-//             <p className="text-xl mb-8">
-//               Find music, concerts, and more with Shazam
-//             </p>
-            
-            
-//             <div className="flex items-center space-x-4 bg-white bg-opacity-20 backdrop-blur-md p-4 rounded-lg w-[80%]">
-//               <img 
-//                 src={qrcode} 
-//                 alt="QR code to get the app" 
-//                 className="w-20 h-20 rounded-md" 
-//               />
-//               <div>
-//                 <p className="font-semibold">Get the app</p>
-//                 <p>Scan the code with your smartphone camera to download the free app</p>
-//               </div>
-//             </div>
-
-            
-//             <div className="mt-4">
-//               <a href="#" className="text-white font-bold hover:text-blue-200">Available on iOS</a>
-//               <span className="mx-2">|</span>
-//               <a href="#" className="text-white font-bold hover:text-blue-200">Android</a>
-//               <span className="mx-2">|</span>
-//               <a href="#" className="text-white font-bold hover:text-blue-200">More Devices</a>
-//             </div>
-//           </div>
-//         </div>
-
-//         <img 
-//           src={shazam} 
-//           alt="Shazam Logo" 
-//           className="absolute bottom-12 right-8 w-20 h-20 bg-white rounded-full p-4 "
-//         />
-//       </section>
-
-
-
-
-//       <div className="flex justify-center items-center py-16">
-//         <div className="bg-red-500  bg-gradient-to-b from-[#e2425a] to-[#e10a22] rounded-lg p-10 text-white w-[70%] shadow-lg h-96">
-//           <div className=" items-center ">
-//             <img
-//               src={music}
-//               alt="Apple Music Classical"
-//               className="w-12 h-12 rounded-lg shadow-lg "
-//             />
-
-            
-
-//             <h2 className="text-4xl font-bold mt-4">
-//               Get up to 2 months free of 
-//               <br /> 
-//               <span className="inline-block">Apple Music Classical
-//               </span>
-//             </h2>
-//           </div>
-//           <button className="mt-20 bg-white text-red-500 font-bold py-2 px-4 rounded-lg">
-//             TRY NOW
-//           </button>
-//         </div>
-//         </div>
-
-//         <Footer/>
-//     </div>
-//   );
-// }
-
-// export default Home;
-
-import Navbar from './Navbar'; 
 import shazamBanner from '../assets/mobile.webp'; 
 import qrcode from '../assets/qrcode.webp';
 import music from '../assets/music2.webp';
 import Footer from './Footer';
-import FixedLogo from './FixedLogo'; // Import the new component
+
 
 function Home() {
 
@@ -150,11 +47,15 @@ function Home() {
 
             {/* Links */}
             <div className="mt-4">
-              <a href="#" className="text-white font-bold hover:text-blue-200">Available on iOS</a>
+              <a href="https://apps.apple.com/us/app/shazam-find-music-concerts/id284993459?amp%3Bat=11l3eE&amp%3Bct=5348615A-616D-3235-3830-44754D6D5973" 
+              
+               className="text-white font-bold hover:text-blue-200">Available on iOS</a>
               <span className="mx-2">|</span>
-              <a href="#" className="text-white font-bold hover:text-blue-200">Android</a>
+              <a href="https://play.google.com/store/apps/details?id=com.shazam.android"
+              
+               className="text-white font-bold hover:text-blue-200">Android</a>
               <span className="mx-2">|</span>
-              <a href="#" className="text-white font-bold hover:text-blue-200">More Devices</a>
+              <a href="/get-app" className="text-white font-bold hover:text-blue-200">More Devices</a>
             </div>
           </div>
         </div>
