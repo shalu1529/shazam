@@ -71,7 +71,7 @@ const Chart = () => {
   const fetchSongs = (listid) => {
     // Filter songs locally based on listid
     const filtered = listid
-      ? musicData.data.filter((song) => song.listid === listid)
+      ? musicData.data.filter((song) => song.attributes.listid === listid)
       : musicData.data;
     setFilteredSongs(filtered);
   };
