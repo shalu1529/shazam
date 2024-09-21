@@ -206,7 +206,7 @@ const Chart = () => {
         
       </div>
 
-      <div className="flex flex-col md:flex-row-reverse justify-between p-4 bg-gray-100">
+      <div className="flex flex-col md:flex-row-reverse justify-between p-4 ">
     
         <div
           className="md:w-[60%] text-white p-10 rounded-lg relative h-auto md:h-[60vh] flex flex-col items-center justify-center mr-10"
