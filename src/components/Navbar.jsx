@@ -217,9 +217,6 @@ function Navbar() {
                 onMouseLeave={() => setShowDropdown(false)}
                 className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-50"
               >
-                <Link to="/wishlist" className=" text-black block px-4 py-2 hover:bg-gray-200">
-                  Wishlist
-                </Link>
                 <button onClick={handleLogout} className=" text-black block w-full text-left px-4 py-2 hover:bg-gray-200">
                   Logout
                 </button>
@@ -252,17 +249,15 @@ function Navbar() {
           <Link to="/apps" onClick={() => setIsMobileMenuOpen(false)} className="font-bold">
             Apps
           </Link>
-          <Link to="/concert" onClick={() => setIsMobileMenuOpen(false)} className="font-bold">
-            Concerts
-          </Link>
+        
           <Link to="/charts" onClick={() => setIsMobileMenuOpen(false)} className="font-bold">
             Charts
           </Link>
           <Link to="/radio" onClick={() => setIsMobileMenuOpen(false)} className="font-bold">
             Radio Spins
           </Link>
-          <Link to="/help" onClick={() => setIsMobileMenuOpen(false)} className="font-bold">
-            Help
+          <Link to="/wishlist" onClick={() => setIsMobileMenuOpen(false)} className="font-bold">
+            Playlist
           </Link>
           <div className="mt-auto">
             <p>Connect to Apple Music to play songs in full within Shazam.</p>
