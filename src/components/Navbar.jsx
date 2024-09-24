@@ -153,14 +153,14 @@ function Navbar() {
           <Link to="/get-app" className={`font-bold hover:text-blue-200 ${location.pathname === '/get-app' ? 'underline' : ''}`}>
             GET THE APP
           </Link>
-          <Link to="/concert" className={`font-bold hover:text-blue-200 ${location.pathname === '/concert' ? 'underline' : ''}`}>
-            CONCERTS
-          </Link>
           <Link to="/charts" className={`font-bold hover:text-blue-200 ${location.pathname === '/charts' ? 'underline' : ''}`}>
             CHARTS
           </Link>
           <Link to="/radio" className={`font-bold hover:text-blue-200 ${location.pathname === '/radio' ? 'underline' : ''}`}>
             RADIO SPINS
+          </Link>
+          <Link to="/wishlist" className={`font-bold hover:text-blue-200 ${location.pathname === '/concert' ? 'underline' : ''}`}>
+            PLAYLIST
           </Link>
         </div>
       </div>
