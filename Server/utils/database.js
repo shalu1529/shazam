@@ -22,4 +22,4 @@ const databaseConnection = () => {
 export default databaseConnection;
 
 
-//=mongodb+srv://shaalu1529:qgLn3o2J9yPuZXTk@usersignuMONGO_URIp.m2bw1.mongodb.net/?retryWrites=true&w=majority&appName=usersignup
+//=mongodb+srv://shaalu1529:qgLn3o2cJ9yPuZXTk@usersignuMONGO_URIp.m2bw1.mongodb.net/?retryWrites=true&w=majority&appName=usersignup

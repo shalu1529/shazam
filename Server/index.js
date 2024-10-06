@@ -25,7 +25,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
  
 // api
-app.use("/", userRouter);
+app.use("/user", userRouter);
 app.use("/wishlist", wishlistRouter);
 
 app.listen(process.env.PORT,() => {
